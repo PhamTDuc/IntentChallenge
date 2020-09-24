@@ -4,21 +4,23 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private final int APP_CONTACT = 1;
-    ImageView phone;
-    ImageView web;
-    ImageView location;
-    ImageView emoji;
+    ImageView ivphone;
+    ImageView ivweb;
+    ImageView ivlocation;
+    ImageView ivemoji;
     LinearLayout layout;
     Button btnAdd;
+    String mood, name, phone, web, addr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,19 +29,10 @@ public class MainActivity extends AppCompatActivity {
 
         layout = findViewById(R.id.layout);
         layout.setVisibility(View.GONE);
-        phone = findViewById(R.id.phone);
-        web = findViewById(R.id.web);
-        emoji = findViewById(R.id.emoji);
-
-
+        ivphone = findViewById(R.id.phone);
+        ivweb = findViewById(R.id.web);
+        ivemoji = findViewById(R.id.emoji);
         btnAdd = findViewById(R.id.btnAdd);
-        btnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, duc.phamtrung.intentchallenge.AddContact.class);
-                startActivityForResult(intent, APP_CONTACT);
-            }
-        });
     }
 
     @Override
@@ -51,10 +44,57 @@ public class MainActivity extends AppCompatActivity {
             switch (resultCode)
             {
                 case RESULT_OK:
-
+                    name = data.getStringExtra("name");
+                    phone = data.getStringExtra("phone");
+                    web = data.getStringExtra("web");
+                    addr = data.getStringExtra("addr");
+                    mood = data.getStringExtra("mood");
+                    switch (mood)
+                    {
+                        case "smile":
+                            ivemoji.setImageResource(R.drawable.emoji_smile);
+                            break;
+                        case "norm":
+                            ivemoji.setImageResource(R.drawable.emoji_normal);
+                            break;
+                        case "angry":
+                            ivemoji.setImageResource(R.drawable.emoji_angry);
+                            break;
+                    }
+                    layout.setVisibility(View.VISIBLE);
                     break;
                 case RESULT_CANCELED:
+                default:
                     break;
+            }
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId())
+        {
+            case R.id.btnAdd: {
+                Intent intent = new Intent(MainActivity.this, duc.phamtrung.intentchallenge.AddContact.class);
+                startActivityForResult(intent, APP_CONTACT);
+                break;
+            }
+
+            case R.id.phone: {
+                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phone));
+                startActivity(intent);
+                break;
+            }
+
+            case R.id.location:{
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("geo:0,0?q="+addr));
+                startActivity(intent);
+                break;
+            }
+            case R.id.web: {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://"+web));
+                startActivity(intent);
+                break;
             }
         }
     }

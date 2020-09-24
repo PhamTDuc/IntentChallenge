@@ -10,7 +10,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-public class AddContact extends AppCompatActivity {
+public class AddContact extends AppCompatActivity implements View.OnClickListener {
 
     EditText inputName;
     EditText inputPhone;
@@ -20,10 +20,11 @@ public class AddContact extends AppCompatActivity {
     ImageView emoji_smile;
     ImageView emoji_normal;
     ImageView emoji_angry;
-
+    String mood="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_contact);
 
@@ -36,7 +37,6 @@ public class AddContact extends AppCompatActivity {
         emoji_normal = findViewById(R.id.norm);
         emoji_angry = findViewById(R.id.angry);
 
-
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -45,7 +45,7 @@ public class AddContact extends AppCompatActivity {
                 String web = inputWeb.getText().toString().trim();
                 String addr = inputAddr.getText().toString().trim();
 
-                if(name.isEmpty()|| phone.isEmpty() || web.isEmpty() || addr.isEmpty())
+                if(name.isEmpty()|| phone.isEmpty() || web.isEmpty() || addr.isEmpty()||AddContact.this.mood.isEmpty())
                 {
                     Toast.makeText(AddContact.this, "You must fill all the fields", Toast.LENGTH_SHORT).show();
                 }
@@ -55,8 +55,26 @@ public class AddContact extends AppCompatActivity {
                 intent.putExtra("phone", phone);
                 intent.putExtra("Web", web);
                 intent.putExtra("addr", addr);
-
+                intent.putExtra("mood", AddContact.this.mood);
+                setResult(RESULT_OK, intent);
+                AddContact.this.finish();
             }
         });
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch(view.getId())
+        {
+            case R.id.smile:
+                this.mood="smile";
+                break;
+            case R.id.norm:
+                this.mood="norm";
+                break;
+            case R.id.angry:
+                this.mood="angry";
+                break;
+        }
     }
 }
