@@ -49,17 +49,22 @@ public class AddContact extends AppCompatActivity implements View.OnClickListene
                 {
                     Toast.makeText(AddContact.this, "You must fill all the fields", Toast.LENGTH_SHORT).show();
                 }
-
-                Intent intent = new Intent();
-                intent.putExtra("name", name);
-                intent.putExtra("phone", phone);
-                intent.putExtra("Web", web);
-                intent.putExtra("addr", addr);
-                intent.putExtra("mood", AddContact.this.mood);
-                setResult(RESULT_OK, intent);
-                AddContact.this.finish();
+                else {
+                    Intent intent = new Intent();
+                    intent.putExtra("name", name);
+                    intent.putExtra("phone", phone);
+                    intent.putExtra("web", web);
+                    intent.putExtra("addr", addr);
+                    intent.putExtra("mood", AddContact.this.mood);
+                    setResult(RESULT_OK, intent);
+                    AddContact.this.finish();
+                }
             }
         });
+
+        emoji_smile.setOnClickListener(AddContact.this);
+        emoji_normal.setOnClickListener(AddContact.this);
+        emoji_angry.setOnClickListener(AddContact.this);
     }
 
     @Override
