@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">IntentChallenge</string>
+    <string name="hint_name">Please enter your name here</string>
+    <string name="hint_phonenumber">Please enter your phone number here</string>
+    <string name="hint_website">Please enter your website here</string>
+    <string name="hint_address">Please enter your address here</string>
+    <string name="submit">Submit</string>
+</resources>
